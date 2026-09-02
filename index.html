@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>ควิซกวนประสาท เกรียนสุด IQ พุ่ง!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <style>
+    :root {
+      --bg-dark: #0a0a0f;
+      --bg-gradient-1: #1a1a2e;
+      --bg-gradient-2: #16213e;
+      --bg-gradient-3: #0f3460;
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.15);
+      --text-primary: #ffffff;
+      --text-secondary: #e0e0e0;
+      --text-muted: #b0b0b0;
+      --accent-pink: #ff6b81;
+      --accent-cyan: #00d9ff;
+      --accent-purple: #a29bfe;
+      --success: #00ff88;
+      --error: #ff4757;
+      --button-grad-start: rgba(255, 255, 255, 0.15);
+      --button-grad-end: rgba(255, 255, 255, 0.05);
+      --shadow-strong: rgba(0, 0, 0, 0.7);
+    }
+
+    * { 
+      box-sizing: border-box; 
+      -webkit-tap-highlight-color: transparent; 
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 50%, var(--bg-gradient-3) 100%);
+      color: var(--text-primary);
+    }
+
+    .container {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 20px 18px 24px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 20px 60px var(--shadow-strong);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 26px;
+      text-align: center;
+      letter-spacing: 0.5px;
+      font-weight: 800;
+      color: var(--text-primary);
+      text-shadow: 0 2px 8px rgba(0, 217, 255, 0.4);
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .iq-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 217, 255, 0.12);
+      border: 1px solid rgba(0, 217, 255, 0.25);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
+
+    .iq-label {
+      font-weight: 700;
+      color: var(--accent-cyan);
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    .iq-value {
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--text-primary);
+      margin-left: auto;
+      text-shadow: 0 0 14px rgba(0, 217, 255, 0.7);
+    }
+
+    .question-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .question-text {
+      font-size: 17px;
+      line-height: 1.4;
+      margin: 0 0 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option-btn {
+      appearance: none;
+      border: none;
+      background: linear-gradient(180deg, var(--button-grad-start), var(--button-grad-end));
+      color: var(--text-primary);
+      padding: 13px 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      cursor: pointer;
+      text-align: left;
+      position: relative;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease, border-color 0.2s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-weight: 600;
+    }
+
+    .option-btn:active {
+      transform: scale(0.97);
+    }
+
+    .option-btn:hover {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.08));
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .option-btn.wrong-hover {
+      animation: warp 0.45s ease;
+    }
+
+    @keyframes warp {
+      0% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(-12px, 6px) scale(1.03); }
+      50% { transform: translate(10px, -8px) scale(1.03); }
+      75% { transform: translate(-6px, -10px) scale(1.03); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    .option-btn.correct {
+      background: linear-gradient(180deg, rgba(0, 255, 136, 0.3), rgba(0, 255, 136, 0.1));
+      border: 1px solid rgba(0, 255, 136, 0.7);
+      box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.3), 0 12px 28px rgba(0, 255, 136, 0.3);
+    }
+
+    .option-btn.wrong {
+      background: linear-gradient(180deg, rgba(255, 71, 87, 0.3), rgba(255, 71, 87, 0.1));
+      border: 1px solid rgba(255, 71, 87, 0.7);
+      box-shadow: 0 0 0 2px rgba(255, 71, 87, 0.3), 0 12px 28px rgba(255, 71, 87, 0.3);
+    }
+
+    .progress {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .result-card {
+      text-align: center;
+      padding: 20px 16px;
+    }
+
+    .result-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 0 0 8px;
+      color: var(--text-primary);
+    }
+
+    .result-iq {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--accent-cyan);
+      text-shadow: 0 0 16px rgba(0, 217, 255, 0.8);
+      margin: 6px 0 14px;
+    }
+
+    .result-message {
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .restart-btn {
+      appearance: none;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-pink), #ff8fa3);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(255, 107, 129, 0.5);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .restart-btn:active {
+      transform: scale(0.96);
+    }
+
+    .restart-btn:hover {
+      box-shadow: 0 14px 30px rgba(255, 107, 129, 0.7);
+    }
+
+    .hidden { display: none; }
+
+    .footer-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    /* Popup */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+
+    .popup {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05));
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 18px 16px;
+      max-width: 380px;
+      text-align: center;
+      color: var(--text-primary);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+      animation: popIn 0.22s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.92) translateY(8px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .popup-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0 0 6px;
+      color: var(--text-primary);
+    }
+
+    .popup-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin: 0 0 14px;
+      white-space: pre-line;
+      line-height: 1.4;
+    }
+
+    .popup-btn {
+      appearance: none;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-cyan), #5ce1ff);
+      color: #003344;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 217, 255, 0.5);
+    }
+
+    .popup-btn:active {
+      transform: scale(0.96);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card" id="mainCard">
+      <h1>🧠 ควิซกวนประสาท เกรียนสุด IQ พุ่ง!</h1>
+      <div class="subtitle">ตอบถูก +9,999 IQ | ตอบผิด -5,000 IQ | เริ่มที่ 100 IQ</div>
+
+      <div class="iq-bar">
+        <div class="iq-label">IQ ปัจจุบัน</div>
+        <div class="iq-value" id="iqValue">100</div>
+      </div>
+
+      <div id="quizArea">
+        <div class="question-card">
+          <div class="question-text" id="questionText">กำลังโหลดคำถาม...</div>
+          <div class="options" id="optionsBox"></div>
+          <div class="progress">
+            <div id="progressText">ข้อที่ 1 / 5</div>
+            <div id="scoreText">คะแนน: 0</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="resultArea" class="result-card hidden">
+        <div class="result-title" id="resultTitle">จบเกมแล้ว!</div>
+        <div class="result-iq" id="resultIq">IQ สุดท้าย: 100</div>
+        <div id="resultMessage" class="result-message"></div>
+        <button class="restart-btn" id="restartBtn">เล่นใหม่อีกครั้ง</button>
+      </div>
+
+      <div class="footer-note">สร้างด้วย HTML + CSS + JavaScript แบบไฟล์เดียว</div>
+    </div>
+  </div>
+
+  <!-- Popup -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+      <div class="popup-title" id="popupTitle">title</div>
+      <div class="popup-desc" id="popupDesc">desc</div>
+      <button class="popup-btn" id="popupClose">ตกลง</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "ซื้อมะม่วงลูกละ 5 บาท จำนวน 7 ลูก ถูกที่สุดคือเท่าไร?",
+        options: ["35 บาท", "30 บาท", "22 บาท"],
+        correctIndex: 2,
+        explain: "เพราะ 22 ตัวเลขน้อยที่สุด = ถูกที่สุดในเชิงราคา!"
+      },
+      {
+        q: "ถ้าไก่ 1 ตัวไข่ 1 ฟองใน 1 วัน แล้วไก่ 5 ตัวจะไข่กี่ฟองใน 5 วัน?",
+        options: ["5 ฟอง", "25 ฟอง", "0 ฟอง"],
+        correctIndex: 2,
+        explain: "เฉลยปั่น: ไก่ทั้งหมดเป็นไก่ตัวผู้!"
+      },
+      {
+        q: "เดือนไหนในหนึ่งปีที่มี 28 วัน?",
+        options: ["กุมภาพันธ์", "กุมภาพันธ์ปีอธิกสุรทิน", "ทุกเดือน"],
+        correctIndex: 2,
+        explain: "ทุกเดือนมีอย่างน้อย 28 วันอยู่แล้ว!"
+      },
+      {
+        q: "เดินเข้าห้องมืด มีเทียน 1 เล่ม ตะเกียง 1 อัน และเตาผิง 1 เตา ต้องจุดอะไรก่อน?",
+        options: ["เทียน", "ไม้ขีดไฟ", "เตาผิง"],
+        correctIndex: 1,
+        explain: "ไม่จุดไม้ขีดไฟก่อน แล้วจะเอาไฟที่ไหนไปจุดอย่างอื่น!"
+      },
+      {
+        q: "ปลาอะไรเอ่ย ไม่มีก้าง?",
+        options: ["ปลากระป๋อง", "ปลาหมึก", "ปลาวาฬ"],
+        correctIndex: 1,
+        explain: "ปลาหมึกไม่ใช่ปลาและไม่มีก้าง!"
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let iq = 100;
+
+    const questionText = document.getElementById("questionText");
+    const optionsBox = document.getElementById("optionsBox");
+    const progressText = document.getElementById("progressText");
+    const scoreText = document.getElementById("scoreText");
+    const iqValue = document.getElementById("iqValue");
+    const quizArea = document.getElementById("quizArea");
+    const resultArea = document.getElementById("resultArea");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultIq = document.getElementById("resultIq");
+    const resultMessage = document.getElementById("resultMessage");
+    const restartBtn = document.getElementById("restartBtn");
+    const popupOverlay = document.getElementById("popupOverlay");
+    const popupTitle = document.getElementById("popupTitle");
+    const popupDesc = document.getElementById("popupDesc");
+    const popupClose = document.getElementById("popupClose");
+
+    const wrongHoverMessages = [
+      "ผิด! ใช้สมองนิดนึง คิดได้ไงเนี่ย!",
+      "โอ๊ยยย... เกือบถูกแล้ว (มั้ง)",
+      "ข้อนี้เด็กประถมก็ตอบได้!",
+      "IQ หลุดไปอีก 1,000 แล้วนะ!",
+      "ลองใหม่! ครั้งนี้คิดก่อนกด!"
+    ];
+
+    const correctMessages = [
+      "อัจฉริยะเกรียนตัวจริง!",
+      "สุดยอด! IQ พุ่งทะลุหลังคา!",
+      "ถูก! คนนี้ของจริง!",
+      "เยส! เก่งมาก เกรียนขั้นเทพ!",
+      "ผ่าน! สมองไวเหมือนไฟ!"
+    ];
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function renderQuestion() {
+      const q = questions[current];
+      questionText.textContent = q.q;
+      optionsBox.innerHTML = "";
+
+      const indexedOptions = q.options.map((text, idx) => ({ text, idx }));
+      shuffleArray(indexedOptions);
+
+      indexedOptions.forEach(item => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.textContent = item.text;
+        btn.dataset.isCorrect = (item.idx === q.correctIndex) ? "1" : "0";
+
+        if (item.idx !== q.correctIndex) {
+          btn.addEventListener("mouseenter", () => {
+            btn.classList.add("wrong-hover");
+            setTimeout(() => btn.classList.remove("wrong-hover"), 450);
+          });
+        }
+
+        btn.addEventListener("click", () => handleAnswer(btn, item.idx === q.correctIndex, q.explain));
+        optionsBox.appendChild(btn);
+      });
+
+      progressText.textContent = `ข้อที่ ${current + 1} / ${questions.length}`;
+      scoreText.textContent = `คะแนน: ${score}`;
+      iqValue.textContent = iq;
+    }
+
+    function handleAnswer(btn, isCorrect, explain) {
+      const allBtns = optionsBox.querySelectorAll(".option-btn");
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add("correct");
+        score += 1;
+        iq += 9999;
+        const msg = correctMessages[Math.floor(Math.random() * correctMessages.length)];
+        showPopup("ถูกแล้ว! 🎉", msg + "\n\n" + explain);
+      } else {
+        btn.classList.add("wrong");
+        iq = Math.max(-999999, iq - 5000);
+        const msg = wrongHoverMessages[Math.floor(Math.random() * wrongHoverMessages.length)];
+        showPopup("ผิดแล้ว! 😆", msg + "\n\nเฉลย: " + explain);
+      }
+
+      iqValue.textContent = iq;
+      scoreText.textContent = `คะแนน: ${score}`;
+
+      setTimeout(() => {
+        current++;
+        if (current >= questions.length) {
+          endGame();
+        } else {
+          renderQuestion();
+        }
+      }, 1300);
+    }
+
+    function showPopup(title, desc) {
+      popupTitle.textContent = title;
+      popupDesc.textContent = desc;
+      popupOverlay.style.display = "flex";
+    }
+
+    popupClose.addEventListener("click", () => {
+      popupOverlay.style.display = "none";
+    });
+
+    function endGame() {
+      quizArea.classList.add("hidden");
+      resultArea.classList.remove("hidden");
+      resultIq.textContent = `IQ สุดท้าย: ${iq}`;
+
+      let title = "จบเกมแล้ว!";
+      let message = "";
+
+      if (iq >= 30000) {
+        title = "ระดับ: อัจฉริยะเกรียนขั้นเทพ!";
+        message = "คุณคือตำนาน! IQ พุ่งจนระบบเกือบพัง!";
+      } else if (iq >= 10000) {
+        title = "ระดับ: เกรียนอัจฉริยะ";
+        message = "เก่งมาก! สมองไวเป็นกรด!";
+      } else if (iq >= 0) {
+        title = "ระดับ: เกรียนธรรมดา";
+        message = "พอใช้ได้! ฝึกอีกนิดแล้วจะเทพ!";
+      } else {
+        title = "ระดับ: เกรียนหลุดมิติ";
+        message = "IQ ติดลบแล้วนะ... กลับมาฝึกสมองใหม่!";
+      }
+
+      resultTitle.textContent = title;
+      resultMessage.textContent = message;
+    }
+
+    restartBtn.addEventListener("click", () => {
+      current = 0;
+      score = 0;
+      iq = 100;
+      quizArea.classList.remove("hidden");
+      resultArea.classList.add("hidden");
+      renderQuestion();
+    });
+
+    renderQuestion();
+  </script>
+</body>
+</html>
